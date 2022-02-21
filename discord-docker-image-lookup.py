@@ -48,10 +48,12 @@ async def on_message(message):
             }
         )
 
-
+        message_content = "\n"
         for result in json.loads(image_resp.data)["results"]:
             for image in result["images"]:
                 if result["name"] == "latest":
-                    await message.channel.send(result["name"]+" "+image["architecture"]+str("" if image["variant"] is None else ":"+image["variant"])+" "+image["last_pushed"])
+                    message_content += result["name"]+" "+image["architecture"]+str("" if image["variant"] is None else ":"+image["variant"])+" "+image["last_pushed"]+"\n\n"
+
+        await message.reply(message_content)
 
 client.run(os.environ['DOCKER_BOT_TOKEN'])
